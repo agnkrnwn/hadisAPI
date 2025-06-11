@@ -1,4 +1,3 @@
-// functions/api/random.js
 export async function onRequest(context) {
   const { request } = context;
   
@@ -15,6 +14,7 @@ export async function onRequest(context) {
 
   try {
     const randomFileNum = Math.floor(Math.random() * 40) + 1;
+    // FIXED PATH: Changed to ../../data/
     const hadistData = await import(`../../data/hadist${randomFileNum}.json`);
     
     const randomIndex = Math.floor(Math.random() * hadistData.hadist.length);

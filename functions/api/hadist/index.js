@@ -1,4 +1,3 @@
-// functions/api/hadist/index.js
 export async function onRequest(context) {
   const { request } = context;
   
@@ -16,19 +15,19 @@ export async function onRequest(context) {
   const collections = [];
   
   for (let i = 1; i <= 40; i++) {
-  try {
-    // FIXED PATH
-    const hadistData = await import(`../../../data/hadist${i}.json`);
-    collections.push({
-      id: `hadist${i}`,
-      name: hadistData.metadata.collection || `hadist${i}`,
-      total_hadist: hadistData.metadata.total_hadist || hadistData.hadist.length,
-      endpoint: `/api/hadist/hadist${i}`
-    });
-  } catch (e) {
-    continue;
+    try {
+      // FIXED PATH: Changed to ../../../data/
+      const hadistData = await import(`../../../data/hadist${i}.json`);
+      collections.push({
+        id: `hadist${i}`,
+        name: hadistData.metadata.collection || `hadist${i}`,
+        total_hadist: hadistData.metadata.total_hadist || hadistData.hadist.length,
+        endpoint: `/api/hadist/hadist${i}`
+      });
+    } catch (e) {
+      continue;
+    }
   }
-}
 
   return new Response(JSON.stringify({
     message: 'Hadist API Collections',
