@@ -15,7 +15,7 @@ export async function onRequest(context) {
 
   try {
     const randomFileNum = Math.floor(Math.random() * 40) + 1;
-    const hadistData = await import(`../data/hadist${randomFileNum}.json`);
+    const hadistData = await import(`../../data/hadist${randomFileNum}.json`);
     
     const randomIndex = Math.floor(Math.random() * hadistData.hadist.length);
     const randomHadist = hadistData.hadist[randomIndex];
