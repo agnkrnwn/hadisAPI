@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Hadis</title>
+    <script>
+        // Fungsi utama untuk menangani permintaan API
+        async function handleRequest() {
+            const path = window.location.pathname.split('/').filter(p => p);
+            
+            // Jika URL: /api/hadist1/1
+            if (path[0] === 'api' && path[1] && path[2]) {
+                const collection = path[1];
+                const number = parseInt(path[2]);
+                
+                try {
+                    // Ambil file JSON dari folder data
+                    const response = await fetch(`data/${collection}.json`);
+                    const data = await response.json();
+                    
+                    // Cari hadis berdasarkan nomor
+                    const hadith = data.hadist.find(h => h.no === number);
+                    
+                    if (hadith) {
+                        // Tampilkan sebagai JSON
+                        return new Response(JSON.stringify(hadith), {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*'
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            // Jika tidak ditemukan
+            return new Response('Not found. Use /api/{nama-file}/{nomor-hadis}', {
+                status: 404,
+                headers: { 'Content-Type': 'text/plain' }
+            });
+        }
+
+        // Jalankan saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            handleRequest().then(response => {
+                if (response) {
+                    response.text().then(text => {
+                        document.body.innerHTML = `<pre>${text}</pre>`;
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>API Hadis Sederhana</h1>
+    <p>Gunakan endpoint: <code>/api/{nama-file}/{nomor-hadis}</code></p>
+    <p>Contoh: <a href="/api/hadist1/1">/api/hadist1/1</a></p>
+</body>
+</html>
